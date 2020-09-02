@@ -8,7 +8,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '28ln6@^_1gy$eim-oy79@f_&b7!c)a&92bly=d(-nn3y0@zc27'
+# SECRET_KEY = '28ln6@^_1gy$eim-oy79@f_&b7!c)a&92bly=d(-nn3y0@zc27'
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -65,10 +67,18 @@ WSGI_APPLICATION = 'rideploy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd1eom309ihsd92',
+        'USER': 'bykptweqhmjqyr',
+        'PASSWORD': 'ef4c0f6475aba85b788ee3397498d1c24ca104b9bf49d4dd1fdf3c6116b56048',
+        'HOST': 'ec2-54-228-209-117.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432'
     }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -109,7 +119,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CSRF_COOKIE_SECURE = True
+
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CORS_REPLACE_HTTPS_REFERER = True
+HOST_SCHEME = "https://"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 1000000
+SECURE_FRAME_DENY = True
