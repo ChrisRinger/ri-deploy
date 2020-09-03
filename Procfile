@@ -1,1 +1,1 @@
-"web: gunicorn rideploy.wsgi" 
+web: gunicorn rideploy.wsgi
